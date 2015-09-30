@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import org.apache.commons.lang.CharEncoding;
+import org.apache.commons.lang3.CharEncoding;
 
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSDictionary;
@@ -235,6 +235,15 @@ public class ERXMutableURL {
 	 * @return the port of this URL (can be null)
 	 */
 	public Integer port() {
+		if (_port == null) {
+			if (protocol() != null) {
+				if ("https".equals(protocol())) {
+					_port = 443;
+				} else {
+					_port = 80;
+				}
+			}
+		}
 		return _port;
 	}
 
