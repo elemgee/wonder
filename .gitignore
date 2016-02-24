@@ -4,6 +4,4 @@ bin
 *.pbxproj
 ant.*
 dist
-Frameworks/Core/.DS_Store
-Frameworks/EOF/.DS_Store
-Utilities/.DS_Store
+.DS_Store
