@@ -18,7 +18,7 @@ import er.extensions.eof.ERXGenericRecord;
 import er.extensions.foundation.ERXValueUtilities;
 
 /**
- * A wizard inspect/edit template. Can be used in-line, and supports ajax updates<br />
+ * A wizard inspect/edit template. Can be used in-line, and supports ajax updates
  * 
  * @d2wKey cancelButtonLabel
  * @d2wKey bannerFileName
@@ -193,7 +193,8 @@ public class ERMODWizardCreationPage extends ERD2WWizardCreationPageTemplate {
 			_cachedEntity = result.entity();
 		} else if (ObjectUtils.notEqual(_cachedEntity, result.entity())) {
 			clearTabSectionsContents();
-			_cachedEntity = result.entity();
+			result.takeValueForKey(null, "tabSectionsContents");
+		    _cachedEntity = result.entity();
 		}
 		return super.d2wContext();
 	}
