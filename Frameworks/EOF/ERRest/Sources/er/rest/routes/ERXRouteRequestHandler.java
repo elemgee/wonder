@@ -125,6 +125,11 @@ import er.rest.routes.jsr311.Paths;
  */
 public class ERXRouteRequestHandler extends WODirectActionRequestHandler {
 	/**
+	 * Header used to override the method of a request. Useful when client code can use only GET and POST methods.
+	 */
+	private static final String X_HTTP_METHOD_OVERRIDE_HEADER_KEY = "x-http-method-override";
+
+	/**
 	 * A NameFormat that behaves like Rails -- plural entities, plural routes, lowercase underscore names
 	 * (names_like_this).
 	 */
@@ -714,6 +719,7 @@ public class ERXRouteRequestHandler extends WODirectActionRequestHandler {
 	
 	/**
 	 * @param method
+	 *            the request method
 	 * @param urlPattern
 	 * @return the first route matching <code>method</code> and <code>pattern</code>.
 	 */
@@ -775,7 +781,6 @@ public class ERXRouteRequestHandler extends WODirectActionRequestHandler {
 	 * @return the matching route for this method and path
 	 */
 	public ERXRoute setupRequestWithRouteForMethodAndPath(WORequest request, String method, String path) {
-		@SuppressWarnings("unchecked")
 		NSDictionary<String, Object> userInfo = request.userInfo();
 		NSMutableDictionary<String, Object> mutableUserInfo;
 		if (userInfo instanceof NSMutableDictionary) {
@@ -818,13 +823,14 @@ public class ERXRouteRequestHandler extends WODirectActionRequestHandler {
 	}
 
 	@Override
-	public NSArray getRequestHandlerPathForRequest(WORequest request) {
-		NSMutableArray<Object> requestHandlerPath = new NSMutableArray<>();
+	public NSArray<String> getRequestHandlerPathForRequest(WORequest request) {
+		NSMutableArray<String> requestHandlerPath = new NSMutableArray<>();
 
 		try {
 			String path = request._uriDecomposed().requestHandlerPath();
+			String method = request.headerForKey(X_HTTP_METHOD_OVERRIDE_HEADER_KEY, request.method());
 
-			ERXRoute matchingRoute = setupRequestWithRouteForMethodAndPath(request, request.method(), path);
+			ERXRoute matchingRoute = setupRequestWithRouteForMethodAndPath(request, method, path);
 			if (matchingRoute != null) {
 				@SuppressWarnings("unchecked")
 				NSDictionary<ERXRoute.Key, String> keys = (NSDictionary<ERXRoute.Key, String>) request.userInfo().objectForKey(ERXRouteRequestHandler.KeysKey);
@@ -855,7 +861,6 @@ public class ERXRouteRequestHandler extends WODirectActionRequestHandler {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public WOAction getActionInstance(Class class1, Class[] aclass, Object[] aobj) {
 		ERXRouteController controller = (ERXRouteController) super.getActionInstance(class1, aclass, aobj);
 		WORequest request = (WORequest) aobj[0];

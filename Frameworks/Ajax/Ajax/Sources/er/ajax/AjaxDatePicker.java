@@ -16,6 +16,7 @@ import com.webobjects.foundation.NSMutableDictionary;
 import com.webobjects.foundation.NSTimestampFormatter;
 
 import er.extensions.appserver.ERXResponseRewriter;
+import er.extensions.formatters.ERXDateTimeFormatter;
 import er.extensions.formatters.ERXJodaFormat;
 import er.extensions.localization.ERXLocalizer;
 
@@ -135,13 +136,19 @@ public class AjaxDatePicker extends AjaxComponent {
 		else if (hasBinding("formatter")) {
     		formatter = (Format) valueForBinding("formatter");
     		if (formatter instanceof NSTimestampFormatter) {
-    			format = translateSimpleDateFormatSymbols(((NSTimestampFormatter)formatter).pattern());
+    			format = ((NSTimestampFormatter)formatter).pattern();
     		}
     		else if (formatter instanceof SimpleDateFormat) {
     			format = ((SimpleDateFormat)formatter).toPattern();
     		}
     		else if (formatter instanceof ERXJodaFormat) {
     			format = ((ERXJodaFormat)formatter).pattern();
+    		}
+    		else if (formatter instanceof ERXDateTimeFormatter) {
+    			format = ((ERXDateTimeFormatter)formatter).pattern();
+    			if (format == null) {
+    				throw new RuntimeException("ERXDateTimeFormatter is missing pattern information: " + formatter);
+    			}
     		}
     		else {
     			throw new RuntimeException("Can't handle formatter of class " + formatter.getClass().getCanonicalName());
@@ -264,7 +271,7 @@ public class AjaxDatePicker extends AjaxComponent {
      * @return JavaScript to load CSS and show calendar display
      */
     public String showCalendarScript() {
-    	StringBuffer script = new StringBuffer(200);
+    	StringBuilder script = new StringBuilder(200);
     	// Load the CSS like this to avoid odd race conditions when this is used in an AjaxModalDialog: at times
     	// the CSS does not appear to be available and the calendar appears in the background
     	script.append("AOD.loadCSS('");

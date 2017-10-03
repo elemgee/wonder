@@ -1,6 +1,6 @@
 package er.extensions.foundation;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -282,5 +282,32 @@ public class ERXStringUtilitiesTest extends ERXTestCase {
 
 		assertNotSame(emptyIdentifierStart, resultWithEmptyStart);
 		assertEquals(prefix, resultWithEmptyStart);
+	}
+
+	@Test
+	public void testDisplayNameForKey() {
+		String lowerCaseKey = "person";
+		String upperCaseKey = "Person";
+		String pascalCaseKey = "TestPerson";
+		String nullKey = null;
+		String emptyKey = "";
+		String spaceKey = " ";
+		String singleCharKey = "a";
+	
+		String lowerCaseDisplayName = ERXStringUtilities.displayNameForKey(lowerCaseKey);
+		String upperCaseDisplayName = ERXStringUtilities.displayNameForKey(upperCaseKey);
+		String pascalCaseDisplayName = ERXStringUtilities.displayNameForKey(pascalCaseKey);
+		String nullDisplayName = ERXStringUtilities.displayNameForKey(nullKey);
+		String emptyDisplayName = ERXStringUtilities.displayNameForKey(emptyKey);
+		String spaceDisplayName = ERXStringUtilities.displayNameForKey(spaceKey);
+		String singleCharDisplayName = ERXStringUtilities.displayNameForKey(singleCharKey);
+	
+		assertEquals("Person", lowerCaseDisplayName);
+		assertEquals("Person", upperCaseDisplayName);
+		assertEquals("Test Person", pascalCaseDisplayName);
+		assertEquals("", nullDisplayName);
+		assertEquals("", emptyDisplayName);
+		assertEquals("", spaceDisplayName);
+		assertEquals("A", singleCharDisplayName);
 	}
 }
