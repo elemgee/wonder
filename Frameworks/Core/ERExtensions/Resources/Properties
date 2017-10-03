@@ -210,8 +210,8 @@ er.extensions.ERXGracefulShutdown.SignalsToHandle=(TERM, INT)
 #########################################################################
 # Navigation 
 #########################################################################
-er.extensions.ERXNavigationManager.NavigationMenuFileName = NavigationMenu.plist
-er.extensions.ERXNavigationManager.localizeDisplayKeys = false
+# er.extensions.ERXNavigationManager.NavigationMenuFileName = NavigationMenu.plist
+# er.extensions.ERXNavigationManager.localizeDisplayKeys = false
 
 #########################################################################
 # Shared EO loading patching 
@@ -513,6 +513,12 @@ er.extensions.concurrency.ERXTaskObjectStoreCoordinatorPool.maxCoordinators = 1
 # If you are using SSL and want to use secure session cookies, set to true
 #
 # er.extensions.ERXSession.useSecureSessionCookies=false
+
+# If you want to set the SameSite policy for session and instance cookies
+# you can set this property to one of the following values:
+# LAX, NORMAL, STRICT
+#
+# er.extensions.ERXSession.cookies.SameSite=STRICT
 
 #########################################################################
 # ERXJDBCConnectionBroker 

@@ -1,5 +1,6 @@
 package er.extensions.appserver;
 
+import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
@@ -22,7 +23,6 @@ import com.webobjects.foundation.NSMutableArray;
 import com.webobjects.foundation.NSTimestamp;
 
 import er.extensions.foundation.ERXExpiringCache;
-import er.extensions.foundation.ERXRandomGUID;
 import er.extensions.foundation.ERXRuntimeUtilities;
 
 /**
@@ -73,7 +73,7 @@ public class ERXDelayedRequestHandler extends WORequestHandler {
 			_request = WOApplication.application().createRequest(request.method(), request.uri(), request.httpVersion(), request.headers(), request.content(), request.userInfo());
 //			_request = (WORequest) request.clone();
 			_future = _executor.submit(this);
-			_id = ERXRandomGUID.newGid();
+			_id = UUID.randomUUID().toString();
 			_start = new NSTimestamp();
 		}
 
@@ -180,7 +180,7 @@ public class ERXDelayedRequestHandler extends WORequestHandler {
 				super.removeEntryForKey(entry, key);
 			}
 		};
-		_urls = new ERXExpiringCache<String, String>(refresh() * 50);
+		_urls = new ERXExpiringCache<>(refresh() * 50);
 	}
 
 	/**
@@ -435,7 +435,7 @@ public class ERXDelayedRequestHandler extends WORequestHandler {
 	 * @return array of delayed requests
 	 */
 	public NSArray<DelayedRequest> activeRequests() {
-		NSMutableArray<DelayedRequest> result = new NSMutableArray<DelayedRequest>();
+		NSMutableArray<DelayedRequest> result = new NSMutableArray<>();
 		for (String id : _futures.allKeys()) {
 			DelayedRequest request = _futures.objectForKey(id);
 			if (request != null) {

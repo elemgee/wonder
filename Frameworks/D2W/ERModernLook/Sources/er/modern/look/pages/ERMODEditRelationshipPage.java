@@ -33,6 +33,7 @@ import com.webobjects.foundation.NSSelector;
 
 import er.directtoweb.pages.ERD2WEditRelationshipPage;
 import er.directtoweb.pages.ERD2WPage;
+import er.extensions.appserver.ERXDisplayGroup;
 import er.extensions.eof.ERXConstant;
 import er.extensions.eof.ERXEC;
 import er.extensions.eof.ERXEOAccessUtilities;
@@ -546,7 +547,7 @@ public class ERMODEditRelationshipPage extends ERD2WPage implements ERMEditRelat
 	 */
 	public WODisplayGroup relationshipDisplayGroup() {
 		if (_relationshipDisplayGroup == null) {
-			_relationshipDisplayGroup = new WODisplayGroup();
+			_relationshipDisplayGroup = new ERXDisplayGroup();
 			_relationshipDisplayGroup.setNumberOfObjectsPerBatch(numberOfObjectsPerBatch());
 		}
 		return _relationshipDisplayGroup;
@@ -634,5 +635,18 @@ public class ERMODEditRelationshipPage extends ERD2WPage implements ERMEditRelat
 			d2wContext().takeValueForKey(inlineTask, "inlineTask");
 		}
 	}
+
+    /**
+     * @return a unique ID for the repetition container
+     */
+    public String idForRepetitionContainer() {
+        String repetitionContainerID = (String) d2wContext().valueForKey(
+                "idForRepetitionContainer");
+        // use master object to generate globally unique ID
+        // - allows for nesting of relationship components
+        repetitionContainerID = repetitionContainerID.concat("_"
+                + masterObject().hashCode());
+        return repetitionContainerID;
+    }
 
 }
