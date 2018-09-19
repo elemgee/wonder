@@ -49,22 +49,22 @@ public class ERXCollectors {
 	 * @return a {@code Collector} which collects all the input elements into a
 	 *         {@code NSArray}, in encounter order
 	 */
-	public static <T> Collector<T, ?, NSArray<T>> toNSArray() {
-		return collectingAndThen(toCollection(NSMutableArray::new), NSArray::immutableClone);
-	}
-
-	/**
-	 * Returns a {@code Collector} that accumulates the input elements into a new
-	 * {@code NSSet}.
-	 *
-	 * @param <T>
-	 *            the type of the input elements
-	 * @return a {@code Collector} which collects all the input elements into a
-	 *         {@code NSSet}, in encounter order
-	 */
-	public static <T> Collector<T, ?, NSSet<T>> toNSSet() {
-		return collectingAndThen(toCollection(NSMutableSet::new), NSSet::immutableClone);
-	}
+//	public static <T> Collector<T, ?, NSArray<T>> toNSArray() {
+//		return collectingAndThen(toCollection(NSMutableArray::new), NSArray::immutableClone);
+//	}
+//
+//	/**
+//	 * Returns a {@code Collector} that accumulates the input elements into a new
+//	 * {@code NSSet}.
+//	 *
+//	 * @param <T>
+//	 *            the type of the input elements
+//	 * @return a {@code Collector} which collects all the input elements into a
+//	 *         {@code NSSet}, in encounter order
+//	 */
+//	public static <T> Collector<T, ?, NSSet<T>> toNSSet() {
+//		return collectingAndThen(toCollection(NSMutableSet::new), NSSet::immutableClone);
+//	}
 
 	/**
 	 * Returns a {@code Collector} that accumulates the input elements grouped by
